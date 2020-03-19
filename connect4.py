@@ -2,18 +2,44 @@ import numpy as np
 import pygame
 import sys
 import math
+import random
 from board.board import Board
 from board.graphics import GBoard
+from bots.random import RandomBot
+
+PLAYER = 0
+BOT = 1
+
+EMPTY = 0
+PLAYER_PIECE = 1
+BOT_PIECE = 2
 
 board = Board()
 gb = GBoard(board)
 
+PLAYER_COLOUR = [gb.RED, gb.YELLOW]
+
 board.print_board()
 game_over = False
-turn = 0
 
-gb.draw_board(board)
+turn = random.randint(PLAYER, BOT)
+
+gb.draw_gboard(board)
 gb.update_gboard()
+
+def next_turn():
+	global turn
+	board.print_board()
+	gb.draw_gboard(board)
+
+	turn += 1
+	turn = turn % 2
+
+def check_win(piece):
+	if board.winning_move(piece):
+		gb.write_on_board("Player" + str(piece) + " wins!!", PLAYER_COLOUR[piece-1], (40, 10))
+		return True
+	return False
 
 while not game_over:
 
@@ -22,50 +48,40 @@ while not game_over:
 			sys.exit()
 
 		if event.type == pygame.MOUSEMOTION:
-			gb.draw_rect(gb.BLACK, (0,0, gb.width, gb.SQUARESIZE))
+			gb.draw_rect(gb.BLACK, (0, 0, gb.width, gb.SQUARESIZE))
 			posx = event.pos[0]
-			if turn == 0:
+			if turn == PLAYER:
 				gb.draw_circle(gb.RED, (posx, int(gb.SQUARESIZE/2)), gb.RADIUS)
-			else: 
-				gb.draw_circle(gb.YELLOW, (posx, int(gb.SQUARESIZE/2)), gb.RADIUS)
+
 		gb.update_gboard()
 
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			gb.draw_rect(gb.BLACK, (0, 0, gb.width, gb.SQUARESIZE))
-
-			# Ask for Player 1 Input
-			if turn == 0:
+			# Player 1's Input
+			if turn == PLAYER:
 				posx = event.pos[0]
 				col = int(math.floor(posx/gb.SQUARESIZE))
 
 				if board.is_valid_location(col):
 					row = board.get_next_open_row(col)
-					board.drop_piece(row, col, 1)
+					board.drop_piece(row, col, PLAYER_PIECE)
 
-					if board.winning_move(1):
-						label = gb.myfont.render("Player 1 wins!!", 1, gb.RED)
-						gb.screen.blit(label, (40, 10))
-						game_over = True
+					game_over = check_win(PLAYER_PIECE)
+					next_turn()
 
-			# Ask for Player 2 Input
-			else:				
-				posx = event.pos[0]
-				col = int(math.floor(posx/gb.SQUARESIZE))
 
-				if board.is_valid_location(col):
-					row = board.get_next_open_row(col)
-					board.drop_piece(row, col, 2)
+	# Bot's Input
+	if turn == BOT and not game_over:
 
-					if board.winning_move(2):
-						label = gb.myfont.render("Player 2 wins!!", 1, gb.YELLOW)
-						gb.screen.blit(label, (40, 10))
-						game_over = True
+		bot = RandomBot()
+		col = bot.getBotMove(board)
 
-			board.print_board()
-			gb.draw_board(board)
+		if board.is_valid_location(col):
+			row = board.get_next_open_row(col)
+			board.drop_piece(row, col, BOT_PIECE)
 
-			turn += 1
-			turn = turn % 2
+			game_over = check_win(BOT_PIECE)
+			next_turn()
 
-			if game_over:
-				pygame.time.wait(3000)
+	if game_over:
+		pygame.time.wait(3000)

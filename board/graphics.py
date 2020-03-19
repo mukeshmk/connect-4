@@ -23,7 +23,7 @@ class GBoard:
     def update_gboard(self):
         pygame.display.update()
     
-    def draw_board(self, board):
+    def draw_gboard(self, board):
         for c in range(board.COLUMN_COUNT):
             for r in range(board.ROW_COUNT):
                 pygame.draw.rect(self.screen, self.BLUE, (c*self.SQUARESIZE, r*self.SQUARESIZE+self.SQUARESIZE, \
@@ -40,6 +40,10 @@ class GBoard:
                     pygame.draw.circle(self.screen, self.YELLOW, (int(c*self.SQUARESIZE+self.SQUARESIZE/2), \
                         self.height-int(r*self.SQUARESIZE+self.SQUARESIZE/2)), self.RADIUS)
         self.update_gboard()
+
+    def write_on_board(self, text, colour, pos):
+        label = self.myfont.render(text, 1, colour)
+        self.screen.blit(label, pos)
 
     def draw_rect(self, colour, params):
         pygame.draw.rect(self.screen, colour, params)
