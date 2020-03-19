@@ -1,11 +1,25 @@
 import numpy as np
+import copy
 
 class Board:
     ROW_COUNT = 6
     COLUMN_COUNT = 7
 
+    EMPTY = 0
+    PLAYER_PIECE = 1
+    BOT_PIECE = 2
+
+    WINDOW_LENGTH = 4
+
     def __init__(self):
         self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT))
+
+    def copy_board(self):
+        c = copy.deepcopy(self)
+        return c
+
+    def getBoard(self):
+        return self.board
 
     def getRowCol(self, row, col):
         return self.board[row][col]
@@ -49,3 +63,9 @@ class Board:
                 if self.board[r][c] == piece and self.board[r-1][c+1] == piece and self.board[r-2][c+2] == piece and self.board[r-3][c+3] == piece:
                     return True
 
+    def get_valid_locations(self):
+        valid_locations = []
+        for col in range(self.COLUMN_COUNT):
+            if self.is_valid_location(col):
+                valid_locations.append(col)
+        return valid_locations

@@ -6,13 +6,10 @@ import random
 from board.board import Board
 from board.graphics import GBoard
 from bots.random import RandomBot
+from bots.minimax import MiniMaxBot
 
 PLAYER = 0
 BOT = 1
-
-EMPTY = 0
-PLAYER_PIECE = 1
-BOT_PIECE = 2
 
 board = Board()
 gb = GBoard(board)
@@ -64,23 +61,23 @@ while not game_over:
 
 				if board.is_valid_location(col):
 					row = board.get_next_open_row(col)
-					board.drop_piece(row, col, PLAYER_PIECE)
+					board.drop_piece(row, col, board.PLAYER_PIECE)
 
-					game_over = check_win(PLAYER_PIECE)
+					game_over = check_win(board.PLAYER_PIECE)
 					next_turn()
 
 
 	# Bot's Input
 	if turn == BOT and not game_over:
 
-		bot = RandomBot()
+		bot = MiniMaxBot()
 		col = bot.getBotMove(board)
 
 		if board.is_valid_location(col):
 			row = board.get_next_open_row(col)
-			board.drop_piece(row, col, BOT_PIECE)
+			board.drop_piece(row, col, board.BOT_PIECE)
 
-			game_over = check_win(BOT_PIECE)
+			game_over = check_win(board.BOT_PIECE)
 			next_turn()
 
 	if game_over:
