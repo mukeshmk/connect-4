@@ -1,6 +1,9 @@
 # vscode file
 .vscode
 
+# patch files
+*.patch
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
