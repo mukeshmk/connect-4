@@ -4,13 +4,20 @@ import sys
 from board.graphics import GBoard
 
 class Human:
-    def __init__(self, player, colour):
-        self.player = player
+    def __init__(self, piece, colour = None):
+        self.piece = piece
         self.colour = colour
 
     def getMove(self, board):
         gb = GBoard(board)
         gb.draw_gboard(board)
+
+        if self.colour == None:
+            if self.piece == 1:
+                self.colour = gb.RED
+            else:
+                self.colour = gb.YELLOW
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

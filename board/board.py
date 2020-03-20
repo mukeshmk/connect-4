@@ -6,8 +6,8 @@ class Board:
     COLUMN_COUNT = 7
 
     EMPTY = 0
-    PLAYER_PIECE = 1
-    BOT_PIECE = 2
+    PLAYER1_PIECE = 1
+    PLAYER2_PIECE = 2
 
     WINDOW_LENGTH = 4
 

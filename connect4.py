@@ -6,9 +6,6 @@ import random
 from board import *
 from bots import *
 
-PLAYER1 = 0
-PLAYER2 = 1
-
 board = Board()
 gb = GBoard(board)
 
@@ -19,15 +16,17 @@ gb.draw_gboard(board)
 gb.update_gboard()
 
 game_over = False
-turn = random.randint(PLAYER1, PLAYER2)
+turn = random.randint(board.PLAYER1_PIECE, board.PLAYER2_PIECE)
 
 def next_turn():
 	global turn
 	board.print_board()
 	gb.draw_gboard(board)
 
-	turn += 1
-	turn = turn % 2
+	if turn == board.PLAYER1_PIECE:
+		turn = board.PLAYER2_PIECE
+	else:
+		turn = board.PLAYER1_PIECE
 
 def check_win(piece):
 	if board.winning_move(piece):
@@ -39,31 +38,31 @@ def connect4(p1, p2):
 	global game_over, board
 	while not game_over:
 		# Player1's Input
-		if turn == PLAYER1 and not game_over:
+		if turn == board.PLAYER1_PIECE and not game_over:
 			col = p1.getMove(board)
 
 			if board.is_valid_location(col):
 				row = board.get_next_open_row(col)
-				board.drop_piece(row, col, board.PLAYER_PIECE)
+				board.drop_piece(row, col, board.PLAYER1_PIECE)
 
-				game_over = check_win(board.PLAYER_PIECE)
+				game_over = check_win(board.PLAYER1_PIECE)
 				next_turn()
 
 		# Player2's Input
-		if turn == PLAYER2 and not game_over:
+		if turn == board.PLAYER2_PIECE and not game_over:
 			col = p2.getMove(board)
 
 			if board.is_valid_location(col):
 				row = board.get_next_open_row(col)
-				board.drop_piece(row, col, board.BOT_PIECE)
+				board.drop_piece(row, col, board.PLAYER2_PIECE)
 
-				game_over = check_win(board.BOT_PIECE)
+				game_over = check_win(board.PLAYER2_PIECE)
 				next_turn()
 
 		if game_over:
 			pygame.time.wait(3000)
 
 if __name__ == "__main__":
-	p1 = MiniMaxBot()
-	p2 = OneStepLookAheadBot()
+	p1 = OneStepLookAheadBot(board.PLAYER1_PIECE)
+	p2 = MiniMaxBot(board.PLAYER2_PIECE)
 	connect4(p1, p2)
