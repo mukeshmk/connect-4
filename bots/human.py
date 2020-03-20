@@ -8,7 +8,7 @@ class Human:
         self.player = player
         self.colour = colour
 
-    def getBotMove(self, board):
+    def getMove(self, board):
         gb = GBoard(board)
         gb.draw_gboard(board)
         while True:

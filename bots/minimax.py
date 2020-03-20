@@ -114,6 +114,6 @@ class MiniMaxBot:
 					break
 			return column, value
 
-	def getBotMove(self, board):
+	def getMove(self, board):
 		col, minimax_score = self.minimax(board, 5, -math.inf, math.inf, True)
 		return col

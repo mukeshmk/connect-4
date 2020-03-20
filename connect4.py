@@ -6,8 +6,8 @@ import random
 from board import *
 from bots import *
 
-PLAYER = 0
-BOT = 1
+PLAYER1 = 0
+PLAYER2 = 1
 
 board = Board()
 gb = GBoard(board)
@@ -15,12 +15,11 @@ gb = GBoard(board)
 PLAYER_COLOUR = [gb.RED, gb.YELLOW]
 
 board.print_board()
-game_over = False
-
-turn = random.randint(PLAYER, BOT)
-
 gb.draw_gboard(board)
 gb.update_gboard()
+
+game_over = False
+turn = random.randint(PLAYER1, PLAYER2)
 
 def next_turn():
 	global turn
@@ -36,47 +35,35 @@ def check_win(piece):
 		return True
 	return False
 
-while not game_over:
+def connect4(p1, p2):
+	global game_over, board
+	while not game_over:
+		# Player1's Input
+		if turn == PLAYER1 and not game_over:
+			col = p1.getMove(board)
 
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			sys.exit()
+			if board.is_valid_location(col):
+				row = board.get_next_open_row(col)
+				board.drop_piece(row, col, board.PLAYER_PIECE)
 
-		if event.type == pygame.MOUSEMOTION:
-			gb.draw_rect(gb.BLACK, (0, 0, gb.width, gb.SQUARESIZE))
-			posx = event.pos[0]
-			if turn == PLAYER:
-				gb.draw_circle(gb.RED, (posx, int(gb.SQUARESIZE/2)), gb.RADIUS)
+				game_over = check_win(board.PLAYER_PIECE)
+				next_turn()
 
-		gb.update_gboard()
+		# Player2's Input
+		if turn == PLAYER2 and not game_over:
+			col = p2.getMove(board)
 
-		if event.type == pygame.MOUSEBUTTONDOWN:
-			gb.draw_rect(gb.BLACK, (0, 0, gb.width, gb.SQUARESIZE))
-			# Player 1's Input
-			if turn == PLAYER:
-				posx = event.pos[0]
-				col = int(math.floor(posx/gb.SQUARESIZE))
+			if board.is_valid_location(col):
+				row = board.get_next_open_row(col)
+				board.drop_piece(row, col, board.BOT_PIECE)
 
-				if board.is_valid_location(col):
-					row = board.get_next_open_row(col)
-					board.drop_piece(row, col, board.PLAYER_PIECE)
+				game_over = check_win(board.BOT_PIECE)
+				next_turn()
 
-					game_over = check_win(board.PLAYER_PIECE)
-					next_turn()
+		if game_over:
+			pygame.time.wait(3000)
 
-
-	# Bot's Input
-	if turn == BOT and not game_over:
-
-		bot = Human(BOT, gb.YELLOW)
-		col = bot.getBotMove(board)
-
-		if board.is_valid_location(col):
-			row = board.get_next_open_row(col)
-			board.drop_piece(row, col, board.BOT_PIECE)
-
-			game_over = check_win(board.BOT_PIECE)
-			next_turn()
-
-	if game_over:
-		pygame.time.wait(3000)
+if __name__ == "__main__":
+	p1 = MiniMaxBot()
+	p2 = OneStepLookAheadBot()
+	connect4(p1, p2)

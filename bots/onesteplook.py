@@ -4,7 +4,7 @@ class OneStepLookAheadBot():
     def __init__(self):
         pass
 
-    def getBotMove(self, board):
+    def getMove(self, board):
         valid_moves = board.get_valid_locations()
 
         win_move_set = set()
