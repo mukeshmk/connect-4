@@ -3,10 +3,8 @@ import pygame
 import sys
 import math
 import random
-from board.board import Board
-from board.graphics import GBoard
-from bots.random import RandomBot
-from bots.minimax import MiniMaxBot
+from board import *
+from bots import *
 
 PLAYER = 0
 BOT = 1
