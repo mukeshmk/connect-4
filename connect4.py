@@ -68,7 +68,7 @@ while not game_over:
 	# Bot's Input
 	if turn == BOT and not game_over:
 
-		bot = MiniMaxBot()
+		bot = OneStepLookAheadBot()
 		col = bot.getBotMove(board)
 
 		if board.is_valid_location(col):
