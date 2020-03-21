@@ -63,6 +63,6 @@ def connect4(p1, p2):
 			pygame.time.wait(3000)
 
 if __name__ == "__main__":
-	p1 = OneStepLookAheadBot(board.PLAYER1_PIECE)
+	p1 = ExpectiMaxBot(board.PLAYER1_PIECE)
 	p2 = MiniMaxBot(board.PLAYER2_PIECE)
 	connect4(p1, p2)
