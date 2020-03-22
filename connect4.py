@@ -32,6 +32,9 @@ def check_win(piece):
 	if board.winning_move(piece):
 		gb.write_on_board("Player" + str(piece) + " wins!!", PLAYER_COLOUR[piece-1], (40, 10))
 		return True
+	if board.check_draw():
+		gb.write_on_board("Draw!!", gb.BLUE, (240, 10))
+		return True
 	return False
 
 def connect4(p1, p2):

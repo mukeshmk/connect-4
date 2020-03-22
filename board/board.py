@@ -13,6 +13,7 @@ class Board:
 
     def __init__(self):
         self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT))
+        self.num_slots_filled = 0
 
     def copy_board(self):
         c = copy.deepcopy(self)
@@ -25,7 +26,8 @@ class Board:
         return self.board[row][col]
     
     def drop_piece(self, row, col, piece):
-	    self.board[row][col] = piece
+        self.board[row][col] = piece
+        self.num_slots_filled += 1
 
     def is_valid_location(self, col):
         return self.board[self.ROW_COUNT-1][col] == 0
@@ -69,3 +71,8 @@ class Board:
             if self.is_valid_location(col):
                 valid_locations.append(col)
         return valid_locations
+
+    def check_draw(self):
+        if self.num_slots_filled == self.ROW_COUNT * self.COLUMN_COUNT:
+            return True
+        return False
