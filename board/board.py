@@ -14,6 +14,7 @@ class Board:
     def __init__(self):
         self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT))
         self.num_slots_filled = 0
+        self.winner = 0
 
     def copy_board(self):
         c = copy.deepcopy(self)
@@ -45,24 +46,28 @@ class Board:
         for c in range(self.COLUMN_COUNT-3):
             for r in range(self.ROW_COUNT):
                 if self.board[r][c] == piece and self.board[r][c+1] == piece and self.board[r][c+2] == piece and self.board[r][c+3] == piece:
+                    self.winner = piece
                     return True
 
         # Check vertical locations for win
         for c in range(self.COLUMN_COUNT):
             for r in range(self.ROW_COUNT-3):
                 if self.board[r][c] == piece and self.board[r+1][c] == piece and self.board[r+2][c] == piece and self.board[r+3][c] == piece:
+                    self.winner = piece
                     return True
 
         # Check positively sloped diaganols
         for c in range(self.COLUMN_COUNT-3):
             for r in range(self.ROW_COUNT-3):
                 if self.board[r][c] == piece and self.board[r+1][c+1] == piece and self.board[r+2][c+2] == piece and self.board[r+3][c+3] == piece:
+                    self.winner = piece
                     return True
 
         # Check negatively sloped diaganols
         for c in range(self.COLUMN_COUNT-3):
             for r in range(3, self.ROW_COUNT):
                 if self.board[r][c] == piece and self.board[r-1][c+1] == piece and self.board[r-2][c+2] == piece and self.board[r-3][c+3] == piece:
+                    self.winner = piece
                     return True
 
     def get_valid_locations(self):
@@ -76,3 +81,6 @@ class Board:
         if self.num_slots_filled == self.ROW_COUNT * self.COLUMN_COUNT:
             return True
         return False
+
+    def get_winner(self):
+        return self.winner
