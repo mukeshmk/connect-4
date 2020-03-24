@@ -16,15 +16,14 @@ class OneStepLookAheadBot():
         stop_loss_move_set = set()
 
         for move in valid_moves:
-            row = board.get_next_open_row(move)
             bot_copy = board.copy_board()
             player_copy = board.copy_board()
 
-            bot_copy.drop_piece(row, move, self.bot_piece)
+            bot_copy.drop_piece(move, self.bot_piece)
             if bot_copy.winning_move(self.bot_piece):
                 win_move_set.add(move)
 
-            player_copy.drop_piece(row, move, self.opp_piece)
+            player_copy.drop_piece(move, self.opp_piece)
             if player_copy.winning_move(self.opp_piece):
                 stop_loss_move_set.add(move)
             else:

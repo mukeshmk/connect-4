@@ -26,16 +26,14 @@ class MiniMaxBot(Evaluation):
 			value = -math.inf
 			column = random.choice(valid_locations)
 			for col in valid_locations:
-				row = board.get_next_open_row(col)
-				
 				b_copy = board.copy_board()
-				b_copy.drop_piece(row, col, self.bot_piece)
+				b_copy.drop_piece(col, self.bot_piece)
 				new_score = self.minimax(b_copy, depth-1, alpha, beta, False)[1]
-				
+
 				if new_score > value:
 					value = new_score
 					column = col
-				
+
 				alpha = max(alpha, value)
 				if alpha >= beta:
 					break
@@ -44,16 +42,14 @@ class MiniMaxBot(Evaluation):
 			value = math.inf
 			column = random.choice(valid_locations)
 			for col in valid_locations:
-				row = board.get_next_open_row(col)
-
 				b_copy = board.copy_board()
-				b_copy.drop_piece(row, col, self.opp_piece)
+				b_copy.drop_piece(col, self.opp_piece)
 				new_score = self.minimax(b_copy, depth-1, alpha, beta, True)[1]
-				
+
 				if new_score < value:
 					value = new_score
 					column = col
-				
+
 				beta = min(beta, value)
 				if alpha >= beta:
 					break

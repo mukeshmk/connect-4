@@ -39,16 +39,17 @@ def check_win(piece):
 
 def connect4(p1, p2):
 	global game_over, board
+
+	board.CURR_PLAYER = turn
+	board.PREV_PLAYER = board.get_opp_player(turn)
+
 	while not game_over:
 		# Player1's Input
 		if turn == board.PLAYER1_PIECE and not game_over:
 			col = p1.get_move(board)
 
 			if board.is_valid_location(col):
-				board.set_player_column(board.PLAYER1_PIECE, col)
-				row = board.get_next_open_row(col)
-				board.drop_piece(row, col, board.PLAYER1_PIECE)
-
+				board.drop_piece(col, board.PLAYER1_PIECE)
 				game_over = check_win(board.PLAYER1_PIECE)
 				next_turn()
 
@@ -57,10 +58,7 @@ def connect4(p1, p2):
 			col = p2.get_move(board)
 
 			if board.is_valid_location(col):
-				board.set_player_column(board.PLAYER2_PIECE, col)
-				row = board.get_next_open_row(col)
-				board.drop_piece(row, col, board.PLAYER2_PIECE)
-
+				board.drop_piece(col, board.PLAYER2_PIECE)
 				game_over = check_win(board.PLAYER2_PIECE)
 				next_turn()
 
@@ -68,6 +66,6 @@ def connect4(p1, p2):
 			pygame.time.wait(3000)
 
 if __name__ == "__main__":
-	p1 = MonteCarloBot(board, board.PLAYER1_PIECE)
-	p2 = MiniMaxBot(board.PLAYER2_PIECE)
+	p1 = MonteCarloBot(board.PLAYER1_PIECE)
+	p2 = Human(board.PLAYER2_PIECE)
 	connect4(p1, p2)
