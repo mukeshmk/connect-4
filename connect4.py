@@ -6,17 +6,13 @@ import random
 from board import *
 from bots import *
 
-board = Board()
-gb = GBoard(board)
+board = None
+gb = None
 
-PLAYER_COLOUR = [gb.RED, gb.YELLOW]
-
-board.print_board()
-gb.draw_gboard(board)
-gb.update_gboard()
+PLAYER_COLOUR = [GBoard.RED, GBoard.YELLOW]
 
 game_over = False
-turn = random.randint(board.PLAYER1_PIECE, board.PLAYER2_PIECE)
+turn = random.randint(Board.PLAYER1_PIECE, Board.PLAYER2_PIECE)
 
 def next_turn():
 	global turn
@@ -38,10 +34,14 @@ def check_win(piece):
 	return False
 
 def connect4(p1, p2):
-	global game_over, board
+	global game_over, board, gb
 
-	board.CURR_PLAYER = turn
-	board.PREV_PLAYER = board.get_opp_player(turn)
+	board = Board()
+	gb = GBoard(board)
+
+	board.print_board()
+	gb.draw_gboard(board)
+	gb.update_gboard()
 
 	while not game_over:
 		# Player1's Input
@@ -66,6 +66,5 @@ def connect4(p1, p2):
 			pygame.time.wait(3000)
 
 if __name__ == "__main__":
-	p1 = MonteCarloBot(board.PLAYER1_PIECE)
-	p2 = Human(board.PLAYER2_PIECE)
-	connect4(p1, p2)
+	print()
+	print("use the file 'game.py' to start the game!")
