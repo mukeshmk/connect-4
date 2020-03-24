@@ -8,7 +8,7 @@ class OneStepLookAheadBot():
         else:
             self.opp_piece = 1
 
-    def getMove(self, board):
+    def get_move(self, board):
         valid_moves = board.get_valid_locations()
 
         win_move_set = set()

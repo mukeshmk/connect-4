@@ -42,9 +42,10 @@ def connect4(p1, p2):
 	while not game_over:
 		# Player1's Input
 		if turn == board.PLAYER1_PIECE and not game_over:
-			col = p1.getMove(board)
+			col = p1.get_move(board)
 
 			if board.is_valid_location(col):
+				board.set_player_column(board.PLAYER1_PIECE, col)
 				row = board.get_next_open_row(col)
 				board.drop_piece(row, col, board.PLAYER1_PIECE)
 
@@ -53,9 +54,10 @@ def connect4(p1, p2):
 
 		# Player2's Input
 		if turn == board.PLAYER2_PIECE and not game_over:
-			col = p2.getMove(board)
+			col = p2.get_move(board)
 
 			if board.is_valid_location(col):
+				board.set_player_column(board.PLAYER2_PIECE, col)
 				row = board.get_next_open_row(col)
 				board.drop_piece(row, col, board.PLAYER2_PIECE)
 
@@ -66,6 +68,6 @@ def connect4(p1, p2):
 			pygame.time.wait(3000)
 
 if __name__ == "__main__":
-	p1 = ExpectiMaxBot(board.PLAYER1_PIECE)
+	p1 = MonteCarloBot(board, board.PLAYER1_PIECE)
 	p2 = MiniMaxBot(board.PLAYER2_PIECE)
 	connect4(p1, p2)

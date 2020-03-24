@@ -10,19 +10,26 @@ class Board:
     PLAYER2_PIECE = 2
 
     WINDOW_LENGTH = 4
+    LAST_COLUMN_POSITION = None
+    LAST_PLAYER_PLAYED = 0
 
     def __init__(self):
-        self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT))
+        self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT), dtype=int)
         self.num_slots_filled = 0
+
+        #adding additional variables for monte carlo tree search
+        self.heights = [(self.ROW_COUNT + 1)*i for i in range(self.COLUMN_COUNT)] # top empty row for each column
+        self.lowest_row = [0]*self.COLUMN_COUNT # number of stones in each row
+        self.top_row = [(x*(self.ROW_COUNT+1))-1 for x in range(1, self.COLUMN_COUNT+1)] # top row of the board (this will never change)
 
     def copy_board(self):
         c = copy.deepcopy(self)
         return c
 
-    def getBoard(self):
+    def get_board(self):
         return self.board
 
-    def getRowCol(self, row, col):
+    def get_row_col(self, row, col):
         return self.board[row][col]
     
     def drop_piece(self, row, col, piece):
@@ -76,3 +83,29 @@ class Board:
         if self.num_slots_filled == self.ROW_COUNT * self.COLUMN_COUNT:
             return True
         return False
+
+    def set_player_column(self, piece, col):
+        self.LAST_COLUMN_POSITION = col
+        self.LAST_PLAYER_PLAYED = piece
+
+    def update_move_list(self, col):
+        self.heights[col] += 1 # update top empty row for column
+        self.lowest_row[col] += 1 # update number of stones in column
+
+    def get_list_moves(self):
+        available_moves = []
+        for i in range(self.COLUMN_COUNT):
+            if self.lowest_row[i] < self.ROW_COUNT:
+                available_moves.append(i)
+        return available_moves
+
+    def search_result(self, piece):
+        if self.winning_move(piece): return 1
+        elif self.winning_move(self.get_opponent_piece(piece)): return 0
+        elif not self.get_list_moves(): return 0.5
+    
+    def get_opponent_piece(self, piece):
+        if piece == self.PLAYER1_PIECE:
+            return self.PLAYER2_PIECE
+        else:
+            return self.PLAYER1_PIECE

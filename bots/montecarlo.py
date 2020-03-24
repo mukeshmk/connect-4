@@ -3,7 +3,6 @@ import sys
 import copy
 import time
 import random
-from bots.evaluation import Evaluation
 
 class MonteCarloBot():
     def __init__(self, board, piece, initialNode = None, max_iterations = 20000 , timeout = 2):
@@ -56,14 +55,14 @@ class MonteCarloBot():
             self.currentNode = Node(piece=self.piece, board=board)
         
         if board.LAST_COLUMN_POSITION is not None:
-            last_column, last_piece = board.LAST_COLUMN_POSITION, board.LAST_PLACED_PIECE
+            last_column, last_piece = board.LAST_COLUMN_POSITION, board.LAST_PLAYER_PLAYED
             print(last_column, last_piece)
             self.currentNode = self.get_child_node(self.currentNode, board, last_column, last_piece)
             board.update_move_list(last_column)
 
         self.currentNode, col = self.montecarlo_tree_search(board, 10000, self.currentNode, 3)
         board.update_move_list(col)
-        self.currentNode = self.get_child_node(self.currentNode, board, col, board.LAST_PLACED_PIECE)
+        self.currentNode = self.get_child_node(self.currentNode, board, col, board.LAST_PLAYER_PLAYED)
         return col
 
     def get_child_node(self, node, board, move, piece):
@@ -91,7 +90,7 @@ class Node:
     def expand(self, move, board):
         # return child when move is taken
         # remove move from current node
-        child = Node(piece = board.LAST_PLACED_PIECE, move = move, parent = self, board=board)
+        child = Node(piece = board.LAST_PLAYER_PLAYED, move = move, parent = self, board=board)
         self.available_moves.remove(move)
         self.children.append(child)
         return child

@@ -59,6 +59,6 @@ class ExpectiMaxBot(Evaluation):
 					break
 			return column, value
 
-	def getMove(self, board):
+	def get_move(self, board):
 		col, expectimax_score = self.expectimax(board, self.depth, -math.inf, 0, True)
 		return col
