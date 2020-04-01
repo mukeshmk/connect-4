@@ -35,6 +35,8 @@ class MonteCarloBot():
             while state.get_valid_locations():
                 col = random.choice(state.get_valid_locations())
                 state.drop_piece(col, state.CURR_PLAYER)
+                if state.winning_move(state.PREV_PLAYER):
+                    break
 
             # backpropagate
             while node is not None:
@@ -48,9 +50,9 @@ class MonteCarloBot():
         win_ratio = lambda x: x.wins/x.visits
         sorted_children = sorted(rootnode.children, key = win_ratio)[::-1]
 
-        for node in sorted_children:
-            print('Move: %s Win Rate: %.2f%%' % (node.move + 1, 100 * node.wins / node.visits))
-        print('Simulations performed: %s\n' % i)
+        #for node in sorted_children:
+        #    print('Move: %s Win Rate: %.2f%%' % (node.move + 1, 100 * node.wins / node.visits))
+        #print('Simulations performed: %s\n' % i)
 
         return rootnode, sorted_children[0].move
 
