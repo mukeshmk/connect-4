@@ -1,4 +1,5 @@
 import pygame
+import pygame.gfxdraw
 
 pygame.init()
 
@@ -7,6 +8,8 @@ class GBoard:
     BLACK = (0,0,0)
     RED = (255,0,0)
     YELLOW = (255,255,0)
+    WHITE = (255, 255, 255)
+    LIGHTBLUE = (93, 173, 226)
 
     SQUARESIZE = 100
 
@@ -41,13 +44,36 @@ class GBoard:
                         self.height-int(r*self.SQUARESIZE+self.SQUARESIZE/2)), self.RADIUS)
         self.update_gboard()
 
-    def write_on_board(self, text, colour, pos):
-        label = self.myfont.render(text, 1, colour)
-        self.screen.blit(label, pos)
-
     def draw_rect(self, colour, params):
         pygame.draw.rect(self.screen, colour, params)
 
     def draw_circle(self, colour, params, radius):
         pygame.draw.circle(self.screen, colour, params, radius)
 
+    def write_on_board(self, text, color, posx, posy, fontsize, inCenter = False):
+        textfont = pygame.font.SysFont("inkfree", fontsize)
+        text_surface = textfont.render(text, True, color)
+        if(inCenter):
+            text_position = text_surface.get_rect(center = (posx, posy))
+        else:
+            text_position = text_surface.get_rect(topleft = (posx, posy))
+        self.screen.blit(text_surface, text_position)
+
+    def button(self, label, posx, posy, width, height, action):
+        mouse_position = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
+
+        textfont = pygame.font.SysFont("inkfree", 25)
+        text_surface = textfont.render(label, True, self.WHITE)
+        text_position = text_surface.get_rect(topleft = (posx + 5, posy + 5 ))
+
+        if posx + width > mouse_position[0] > posx and posy + height > mouse_position[1] > posy:
+            pygame.draw.rect(self.screen, self.WHITE, (posx, posy, width, height), 1)
+
+            if click[0] == 1 and action != None:
+               action()
+
+        else:
+            pygame.draw.rect(self.screen, self.WHITE, (posx, posy, width, height), 1)
+
+        self.screen.blit(text_surface, text_position)
