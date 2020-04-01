@@ -45,9 +45,10 @@ def check_win(piece):
 		return True
 	return False
 
-def connect4(p1, p2):
+def connect4(p1, p2, ui=True):
 	global game_over, board, gb, graphics
 
+	graphics=ui
 	board = Board()
 	board.print_board()
 

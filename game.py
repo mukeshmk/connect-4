@@ -22,15 +22,26 @@ name_map = {
     'montecarlo': 'Monte Carlo Tree Search Bot'
 }
 
+def str2bool(v):
+    if isinstance(v, bool):
+       return v
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--p1', help='Player 1 type (default Human)', type=str)
     parser.add_argument('--p2', help='Player 2 type (default Human)', type=str)
-    parser.add_argument('--bots', help='Lists the Bots available to play with', type=bool)
+    parser.add_argument('--ui', help='turn UI off in case of a bot vs bot match', type=str2bool, nargs='?', const=True, default=True)
+    parser.add_argument('--bots', help='Lists the Bots available to play with', type=str2bool, nargs='?', const=True, default=False)
     args = parser.parse_args()
 
     print("\n")
-    if not args.bots is None:
+    if args.bots:
         print('The available bots to play with are:')
         print('Random Int Bot (random)')
         print('One Step Look Ahead Bot (onestep)')
@@ -69,7 +80,11 @@ def main():
 
     print("\n")
 
-    connect4(p1, p2)
+    if args.ui == False and (Human == type(p1) or Human == type(p2)):
+        print("Can not play game as Human without UI!")
+        exit(1)
+
+    connect4(p1, p2, args.ui)
 
 if __name__ == '__main__':
     main()
