@@ -11,23 +11,37 @@ class Board:
 
     WINDOW_LENGTH = 4
 
+    PREV_MOVE = None
+    PREV_PLAYER = None
+    CURR_PLAYER = None
+
     def __init__(self):
-        self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT))
+        self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT), dtype=int)
         self.num_slots_filled = 0
 
     def copy_board(self):
         c = copy.deepcopy(self)
         return c
 
-    def getBoard(self):
+    def get_board(self):
         return self.board
 
-    def getRowCol(self, row, col):
+    def get_row_col(self, row, col):
         return self.board[row][col]
-    
-    def drop_piece(self, row, col, piece):
+
+    def get_opp_player(self, piece):
+        if piece == self.PLAYER1_PIECE:
+            return self.PLAYER2_PIECE
+        else:
+            return self.PLAYER1_PIECE
+
+    def drop_piece(self, col, piece):
+        row = self.get_next_open_row(col)
         self.board[row][col] = piece
         self.num_slots_filled += 1
+        self.PREV_MOVE = col
+        self.PREV_PLAYER = piece
+        self.CURR_PLAYER = self.get_opp_player(piece)
 
     def is_valid_location(self, col):
         return self.board[self.ROW_COUNT-1][col] == 0
@@ -76,3 +90,11 @@ class Board:
         if self.num_slots_filled == self.ROW_COUNT * self.COLUMN_COUNT:
             return True
         return False
+
+    def search_result(self, piece):
+        if self.winning_move(piece):
+            return 1
+        elif self.winning_move(self.get_opp_player(piece)):
+            return 0
+        elif not self.get_valid_locations():
+            return 0.5

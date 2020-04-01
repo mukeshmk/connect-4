@@ -8,7 +8,7 @@ class Human:
         self.piece = piece
         self.colour = colour
 
-    def getMove(self, board):
+    def get_move(self, board):
         gb = GBoard(board)
         gb.draw_gboard(board)
 

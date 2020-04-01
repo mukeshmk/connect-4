@@ -9,7 +9,8 @@ bot_map = {
     'random': RandomBot,
     'onestep': OneStepLookAheadBot,
     'minimax': MiniMaxBot,
-    'expectimax': ExpectiMaxBot
+    'expectimax': ExpectiMaxBot,
+    'montecarlo': MonteCarloBot
 }
 
 name_map = {
@@ -17,7 +18,8 @@ name_map = {
     'random': 'Random Bot',
     'onestep': 'One Step Look Ahead Bot',
     'minimax': 'MiniMax Bot',
-    'expectimax': 'ExpectiMax Bot'
+    'expectimax': 'ExpectiMax Bot',
+    'montecarlo': 'Monte Carlo Tree Search Bot'
 }
 
 def main():
@@ -34,6 +36,7 @@ def main():
         print('One Step Look Ahead Bot (onestep)')
         print('MiniMax Bot (minimax)')
         print('ExpectiMax Bot (expectimax)')
+        print('Monte Carlo Tree Search Bot (montecarlo)')
         print()
         print('Use the string in the brackets to pass as argument to p1 and p2')
         exit(1)

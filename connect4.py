@@ -46,23 +46,19 @@ def connect4(p1, p2):
 	while not game_over:
 		# Player1's Input
 		if turn == board.PLAYER1_PIECE and not game_over:
-			col = p1.getMove(board)
+			col = p1.get_move(board)
 
 			if board.is_valid_location(col):
-				row = board.get_next_open_row(col)
-				board.drop_piece(row, col, board.PLAYER1_PIECE)
-
+				board.drop_piece(col, board.PLAYER1_PIECE)
 				game_over = check_win(board.PLAYER1_PIECE)
 				next_turn()
 
 		# Player2's Input
 		if turn == board.PLAYER2_PIECE and not game_over:
-			col = p2.getMove(board)
+			col = p2.get_move(board)
 
 			if board.is_valid_location(col):
-				row = board.get_next_open_row(col)
-				board.drop_piece(row, col, board.PLAYER2_PIECE)
-
+				board.drop_piece(col, board.PLAYER2_PIECE)
 				game_over = check_win(board.PLAYER2_PIECE)
 				next_turn()
 
