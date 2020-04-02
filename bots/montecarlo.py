@@ -14,6 +14,9 @@ class MonteCarloBot():
     def montecarlo_tree_search(self, board, max_iterations, currentNode, timeout = 100):
         rootnode = Node(piece=board.PREV_PLAYER, board=board)
 
+        if currentNode is not None:
+            rootnode = currentNode
+
         start = time.perf_counter()
         for i in range(max_iterations):
             node = rootnode
