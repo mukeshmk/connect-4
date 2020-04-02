@@ -1,4 +1,9 @@
 import numpy as np
+
+#pygame version number and welcome message hidden.
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 import pygame
 import sys
 import math
@@ -33,15 +38,16 @@ def next_turn():
 def check_win(piece):
 	if board.winning_move(piece):
 		if graphics:
-			gb.write_on_board("Player" + str(piece) + " wins!!", PLAYER_COLOUR[piece-1], (40, 10))
+			gb.write_on_board("PLAYER " + str(piece) + " WINS!", PLAYER_COLOUR[piece - 1], 350, 50, 70, True)
 			gb.update_gboard()
-		print("\nPlayer" + str(piece) + " wins!!")
+		print("\PLAYER " + str(piece) + "WINS!")
 		return True
+	
 	if board.check_draw():
 		if graphics:
-			gb.write_on_board("Draw!!", gb.BLUE, (240, 10))
+			gb.write_on_board("IT'S A TIE!", gb.LIGHTBLUE, 350, 50, 70, True)
 			gb.update_gboard()
-		print("\nDraw!!")
+		print("\n IT'S A TIE!")
 		return True
 	return False
 
@@ -78,7 +84,8 @@ def connect4(p1, p2, ui=True):
 				game_over = check_win(board.PLAYER2_PIECE)
 
 		if game_over:
-			pygame.time.wait(3000)
+			pygame.time.wait(1000)
+			sys.exit()
 
 if __name__ == "__main__":
 	print()
