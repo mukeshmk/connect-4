@@ -49,7 +49,8 @@ def connect4(p1, p2, ui=True):
 	global game_over, board, gb, graphics
 
 	graphics=ui
-	board = Board()
+
+	board = Board(turn)
 	board.print_board()
 
 	if graphics:
