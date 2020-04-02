@@ -36,10 +36,10 @@ class GBoard:
         
         for c in range(board.COLUMN_COUNT):
             for r in range(board.ROW_COUNT):		
-                if board.getRowCol(r, c) == 1:
+                if board.get_row_col(r, c) == 1:
                     pygame.draw.circle(self.screen, self.RED, (int(c*self.SQUARESIZE+self.SQUARESIZE/2),\
                          self.height-int(r*self.SQUARESIZE+self.SQUARESIZE/2)), self.RADIUS)
-                elif board.getRowCol(r, c) == 2: 
+                elif board.get_row_col(r, c) == 2: 
                     pygame.draw.circle(self.screen, self.YELLOW, (int(c*self.SQUARESIZE+self.SQUARESIZE/2), \
                         self.height-int(r*self.SQUARESIZE+self.SQUARESIZE/2)), self.RADIUS)
         self.update_gboard()
