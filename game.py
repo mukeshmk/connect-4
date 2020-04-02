@@ -28,6 +28,8 @@ name_map = {
     'montecarlo': 'Monte Carlo Tree Search Bot'
 }
 
+board = Board(1)
+
 def str2bool(v):
     if isinstance(v, bool):
        return v
@@ -96,10 +98,9 @@ def main(first_player = None, second_player = None):
     connect4(p1, p2, args.ui)
 
 def main_screen():
-    global game_over, board, graphics_board
     pygame.init()
     pygame.display.set_caption("Connect Four | AI Project")
-    board = Board()
+    # board = Board(1)
     graphics_board = GBoard(board)
 
     player_vs_player_button = graphics_board.create_button(60, 220, 300, 40, '1. PLAYER VS PLAYER', main)
@@ -137,7 +138,7 @@ def main_screen():
 
 def bot_vs_human_screen():
     pygame.init()
-    board = Board()
+    # board = Board(1)
     graphics_board = GBoard(board)
 
     def human_vs_minimax():
@@ -186,7 +187,7 @@ def bot_vs_human_screen():
 
 def bot_vs_bot_screen():
     pygame.init()
-    board = Board()
+    # board = Board(1)
     graphics_board = GBoard(board)
 
     first_bot = second_bot = None
