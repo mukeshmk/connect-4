@@ -26,13 +26,6 @@ name_map = {
     'expectimax': 'ExpectiMax Bot'
 }
 
-class Players:
-    def human_minimax(self):
-        main("human", "minimax")
-
-    def human_expectimax(self):
-        main("human", "expectimax")
-
 def main(first_player = None, second_player = None):
     parser = argparse.ArgumentParser()
     parser.add_argument('--p1', help='Player 1 type (default Human)', type=str)
@@ -84,73 +77,150 @@ def main(first_player = None, second_player = None):
 
     connect4(p1, p2)
 
-def first_screen():
+def main_screen():
     global game_over, board, graphics_board
     pygame.init()
     pygame.display.set_caption("Connect Four | AI Project")
     board = Board()
     graphics_board = GBoard(board)
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
+    player_vs_player_button = graphics_board.create_button(60, 220, 300, 40, '1. PLAYER VS PLAYER', main)
+    player_vs_bot_button = graphics_board.create_button(60, 280, 300, 40, '2. PLAYER VS BOT', bot_vs_human_screen)
+    bot_vs_bot_button = graphics_board.create_button(60, 340, 300, 40, '3. BOT VS BOT', bot_vs_bot_screen)
+    quit_button = graphics_board.create_button(60, 600, 100, 40, 'QUIT', sys.exit)
 
+    button_list = [player_vs_player_button, player_vs_bot_button, bot_vs_bot_button, quit_button]
+
+    while True:
         graphics_board.write_on_board("CONNECT 4 GAME", graphics_board.RED , 350 , 100, 60, True)
         graphics_board.write_on_board("CHOOSE ONE OF THE OPTIONS TO PLAY", graphics_board.YELLOW , 350 , 175, 30, True)
 
-        graphics_board.button("1. PLAYER VS PLAYER", 60, 220, 300, 40, main)
-        graphics_board.button("2. PLAYER VS BOT", 60, 280, 300, 40, bot_vs_human)
-        graphics_board.button("3. BOT VS BOT", 60, 340, 300, 40, bot_vs_bot)
-        graphics_board.button("EXIT", 60, 600, 80, 40, sys.exit)
-      
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for button in button_list:
+                        if button['button position'].collidepoint(event.pos):
+                            button['callback']()
+            
+            elif event.type == pygame.MOUSEMOTION:
+                for button in button_list:
+                    if button['button position'].collidepoint(event.pos):
+                        button['color'] = graphics_board.RED
+                    else:
+                        button['color'] = graphics_board.WHITE
+
+        for button in button_list:
+            graphics_board.draw_button(button, graphics_board.screen)
+
         pygame.display.update()
 
-def bot_vs_human():
+def bot_vs_human_screen():
     pygame.init()
     board = Board()
     graphics_board = GBoard(board)
 
-    players = Players()
+    def human_vs_minimax():
+        main("human", "minimax")
+
+    def human_vs_expectimax():
+        main("human", "expectimax")
+    
+    def human_vs_montecarlo():
+        main("human", "montecarlo")
+
+    minimax_button = graphics_board.create_button(60, 220, 400, 40, '1. MINIMAX BOT', human_vs_minimax)
+    expectimax_button = graphics_board.create_button(60, 280, 400, 40, '2. EXPECTIMAX BOT', human_vs_expectimax)
+    montecarlo_button = graphics_board.create_button(60, 340, 400, 40, '3. MONTECARLO SEARCH BOT', human_vs_montecarlo)
+    
+    back_button = graphics_board.create_button(60, 600, 100, 40, 'BACK', main_screen)
+    quit_button = graphics_board.create_button(180, 600, 100, 40, 'QUIT', sys.exit)
+
+    button_list = [minimax_button, expectimax_button, montecarlo_button, back_button, quit_button]
 
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sys.exit()
-
         graphics_board.write_on_board("CONNECT 4 GAME", graphics_board.RED , 350 , 100, 60, True)
         graphics_board.write_on_board("CHOOSE THE BOT TO PLAY AGAINST", graphics_board.YELLOW , 350 , 175, 30, True)
 
-        graphics_board.button("1. MINIMAX BOT", 60, 220, 400, 40, players.human_minimax)
-        graphics_board.button("2. EXPECTIMAX BOT", 60, 280, 400, 40, players.human_expectimax)
-        graphics_board.button("3. MONTECARLO SEARCH BOT", 60, 340, 400, 40, None)
-        
-        graphics_board.button("BACK", 60, 600, 80, 40,first_screen)
-        graphics_board.button("EXIT", 180, 600, 80, 40, sys.exit)
-
-        pygame.display.update()
-
-def bot_vs_bot():
-    pygame.init()
-    board = Board()
-    graphics_board = GBoard(board)
-
-    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
 
-        graphics_board.write_on_board("CONNECT 4 GAME", graphics_board.RED , 350 , 100, 60, True)
-        graphics_board.write_on_board("CHOOSE THE BOT(S) TO PLAY", graphics_board.YELLOW , 350 , 175, 30, True)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for button in button_list:
+                        if button['button position'].collidepoint(event.pos):
+                            button['callback']()
+            
+            elif event.type == pygame.MOUSEMOTION:
+                for button in button_list:
+                    if button['button position'].collidepoint(event.pos):
+                        button['color'] = graphics_board.RED
+                    else:
+                        button['color'] = graphics_board.WHITE
 
-        graphics_board.button("1. MINIMAX BOT", 60, 220, 400, 40, None)
-        graphics_board.button("2. EXPECTIMAX BOT", 60, 280, 400, 40, None)
-        graphics_board.button("3. MONTECARLO SEARCH BOT", 60, 340, 400, 40, None)
+        for button in button_list:
+            graphics_board.draw_button(button, graphics_board.screen)
+
+        pygame.display.update()
+
+def bot_vs_bot_screen():
+    pygame.init()
+    board = Board()
+    graphics_board = GBoard(board)
+
+    first_bot = second_bot = None
+
+    def bots_to_play_against(bot_to_play):
+        nonlocal first_bot, second_bot
+
+        if first_bot == None:
+            first_bot = bot_to_play
+        elif second_bot == None and first_bot != None:
+            second_bot= bot_to_play
+
+        if first_bot != None and second_bot != None:
+            main(first_bot, second_bot)
+
+    minimax_button = graphics_board.create_button(60, 220, 400, 40, '1. MINIMAX BOT',  bots_to_play_against, ("minimax"))
+    expectimax_button = graphics_board.create_button(60, 280, 400, 40, '2. EXPECTIMAX BOT', bots_to_play_against, ("expectimax"))
+    montecarlo_button = graphics_board.create_button(60, 340, 400, 40, '3. MONTECARLO SEARCH BOT', bots_to_play_against, ("montecarlo"))
+    
+    back_button = graphics_board.create_button(60, 600, 100, 40, 'BACK', main_screen)
+    quit_button = graphics_board.create_button(180, 600, 100, 40, 'QUIT', sys.exit)
+
+    button_list = [minimax_button, expectimax_button, montecarlo_button, back_button, quit_button]
+
+    while True:
+        graphics_board.write_on_board("CONNECT 4 GAME", graphics_board.RED , 350 , 100, 60, True)
+        graphics_board.write_on_board("CHOOSE ANY TWO BOT(S) TO PLAY", graphics_board.YELLOW , 350 , 175, 30, True)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for button in button_list:
+                        if button['button position'].collidepoint(event.pos):
+                            if(button['args'] != None):
+                                button['callback'](button['args'])
+                            else:
+                                button['callback']()
+            
+            elif event.type == pygame.MOUSEMOTION:
+                for button in button_list:
+                    if button['button position'].collidepoint(event.pos):
+                        button['color'] = graphics_board.RED
+                    else:
+                        button['color'] = graphics_board.WHITE                
         
-        graphics_board.button("BACK", 60, 600, 80, 40,first_screen)
-        graphics_board.button("EXIT", 180, 600, 80, 40, sys.exit)
+        for button in button_list:
+            graphics_board.draw_button(button, graphics_board.screen)
 
         pygame.display.update()
 
 if __name__ == '__main__':
-    first_screen()
+    main_screen()

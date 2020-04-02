@@ -58,22 +58,23 @@ class GBoard:
         else:
             text_position = text_surface.get_rect(topleft = (posx, posy))
         self.screen.blit(text_surface, text_position)
+    
+    def draw_button(self, button, screen):
+        pygame.draw.rect(screen, button['color'], button['button position'], 1)
+        screen.blit(button['text surface'], button['text rectangle'])
 
-    def button(self, label, posx, posy, width, height, action):
-        mouse_position = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-
+    def create_button(self, posx, posy, width, height, label, callback, optional_arguments = None):
         textfont = pygame.font.SysFont("inkfree", 25)
         text_surface = textfont.render(label, True, self.WHITE)
-        text_position = text_surface.get_rect(topleft = (posx + 5, posy + 5 ))
 
-        if posx + width > mouse_position[0] > posx and posy + height > mouse_position[1] > posy:
-            pygame.draw.rect(self.screen, self.WHITE, (posx, posy, width, height), 1)
-
-            if click[0] == 1 and action != None:
-               action()
-
-        else:
-            pygame.draw.rect(self.screen, self.WHITE, (posx, posy, width, height), 1)
-
-        self.screen.blit(text_surface, text_position)
+        button_position = pygame.Rect(posx, posy, width, height)
+        text_rectangle = text_surface.get_rect(topleft = (posx + 10, posy + 5))
+        button = {
+            'button position': button_position,
+            'text surface': text_surface,
+            'text rectangle': text_rectangle,
+            'color': self.WHITE,
+            'callback': callback,
+            'args': optional_arguments,
+            }
+        return button

@@ -72,9 +72,8 @@ def connect4(p1, p2):
 				next_turn()
 
 		if game_over:
-			pygame.time.wait(3000)
-			gb.screen.fill(gb.BLACK)
-			pygame.display.update()
+			pygame.time.wait(1000)
+			sys.exit()
 
 if __name__ == "__main__":
 	print()
