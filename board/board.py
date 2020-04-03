@@ -15,9 +15,11 @@ class Board:
     PREV_PLAYER = None
     CURR_PLAYER = None
 
-    def __init__(self):
+    def __init__(self, current_player):
         self.board = np.zeros((self.ROW_COUNT, self.COLUMN_COUNT), dtype=int)
         self.num_slots_filled = 0
+        self.CURR_PLAYER = current_player
+        self.PREV_PLAYER = self.get_opp_player(current_player)
 
     def copy_board(self):
         c = copy.deepcopy(self)
