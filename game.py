@@ -48,6 +48,9 @@ def main(first_player = None, second_player = None):
     parser.add_argument('--bots', help='Lists the Bots available to play with', type=str2bool, nargs='?', const=True, default=False)
     args = parser.parse_args()
 
+    if args.p1 is None and args.p2 is None and args.ui and first_player is None:
+        main_screen()
+
     print("\n")
     if args.bots:
         print('The available bots to play with are:')
@@ -62,8 +65,13 @@ def main(first_player = None, second_player = None):
 
     p1 = p2 = None
     
-    args.p1 = first_player
-    args.p2 = second_player
+    if first_player != None:
+        args.p1 = first_player
+        args.p2 = second_player
+
+    if args.p1 is None or args.p2 is None:
+        print('Set both p1 and p2 args')
+        sys.exit()
 
     if args.p1 is None or args.p1 == "human":
         print("Player 1 is set as a Human")
@@ -103,7 +111,10 @@ def main_screen():
     # board = Board(1)
     graphics_board = GBoard(board)
 
-    player_vs_player_button = graphics_board.create_button(60, 220, 300, 40, '1. PLAYER VS PLAYER', main)
+    def human_vs_human():
+        main("human", "human")
+
+    player_vs_player_button = graphics_board.create_button(60, 220, 300, 40, '1. PLAYER VS PLAYER', human_vs_human)
     player_vs_bot_button = graphics_board.create_button(60, 280, 300, 40, '2. PLAYER VS BOT', bot_vs_human_screen)
     bot_vs_bot_button = graphics_board.create_button(60, 340, 300, 40, '3. BOT VS BOT', bot_vs_bot_screen)
     quit_button = graphics_board.create_button(60, 600, 100, 40, 'QUIT', sys.exit)
@@ -242,4 +253,4 @@ def bot_vs_bot_screen():
         pygame.display.update()
 
 if __name__ == '__main__':
-    main_screen()
+    main()
