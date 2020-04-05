@@ -1,0 +1,4 @@
+def selection(self):
+	# return child with largest UCT value
+	uct_value = lambda node: node.wins / node.visits + np.sqrt(2 * np.log(parent_node.visits) / node.visits)
+	return sorted(self.children, key = uct_value)[-1]
