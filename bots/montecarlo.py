@@ -72,7 +72,7 @@ class MonteCarloBot():
         if board.PREV_MOVE is not None:
             self.currentNode = self.get_child_node(self.currentNode, board, board.PREV_MOVE, board.CURR_PLAYER)
 
-        self.currentNode, col = self.montecarlo_tree_search(board, 10000, self.currentNode, 3)
+        self.currentNode, col = self.montecarlo_tree_search(board, self.max_iterations, self.currentNode, self.timeout)
         self.currentNode = self.get_child_node(self.currentNode, board, col, board.PREV_PLAYER)
         return col
 
