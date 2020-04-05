@@ -1,0 +1,15 @@
+		else:
+			utility = math.inf
+			best_move = random.choice(valid_moves)
+			for move in valid_moves:
+				state.simulate_opponent_move(move)
+				new_utility = expectimax(state, depth-1, alpha, beta, True)[1]
+
+				if new_utility <= utility:
+					utility = new_utility
+					best_move = move
+
+				beta = utility/no_of_valid_moves
+				if alpha >= beta:
+					break
+			return best_move, utility
