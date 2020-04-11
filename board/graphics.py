@@ -4,7 +4,7 @@ import pygame.gfxdraw
 pygame.init()
 
 class GBoard:
-    BLUE = (0,0,255)
+    BLUE = (63,124,230)
     BLACK = (0,0,0)
     RED = (255,0,0)
     YELLOW = (255,255,0)

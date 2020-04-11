@@ -1,36 +1,18 @@
 	def evaluate_window(window):
 		score = 0
-		if window.count(agents_coin) == 4:
+		if window.count(agent)==4:
 			score += 100
-		elif window.count(agents_coin) == 3 and window.count(EMPTY) == 1:
+		elif window.count(agent)==3 and window.count(EMPTY)==1:
 			score += 5
-		elif window.count(agents_coin) == 2 and window.count(EMPTY) == 2:
+		elif window.count(agent)==2 and window.count(EMPTY)==2:
 			score += 2
-
-		if window.count(opponent_coin) == 3 and window.count(EMPTY) == 1:
+		if window.count(opponent)==3 and window.count(EMPTY)==1:
 			score -= 4
-
 		return score
 		
 	def evaluate(state)
 		score = 0
-		## Score center column
 		score += state.center_column.count(agents_coin) * 3
-		
-		## Score Horizontal
-		for window in state.all_possible_horizontal_windows:
-			score += evaluate_window(window)
-			
-		## Score Vertical
-		for window in state.all_possible_horizontal_windows:
-			score += evaluate_window(window)
-		
-		## Score positive sloped Diagonal
-		for window in state.all_possible_pos_sloped_windows:
-			score += evaluate_window(window)
-		
-		## Score negative sloped Diagonal
-		for window in state.all_possible_neg_solved_windows:
-			score += evaluate_window(window)
-		
+		# iterates threw possible windows and calculates score
+		evaluate_window(all_possible_window)
 		return score

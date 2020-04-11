@@ -1,46 +1,29 @@
-	def minimax(state, depth, alpha, beta, maximizingPlayer):
-		valid_moves = state.get_valid_moves()
-		is_terminal = state.is_terminal_node()
-
-		if depth == 0 or is_terminal:
-			if is_terminal:
-				if state.check_win(agent):
-					return (None, 100000)
-				elif state.check_win(opponent):
-					return (None, -100000)
-				else: # Game is over, no more valid moves
-					return (None, 0)
-			else: # Depth is zero
-				return (None, evaluate(state))
-
-		if maximizingPlayer:
-			utility = -math.inf
-			best_move = random.choice(valid_moves)
-			for move in valid_moves:
-				state.agent_makes_move(move)
-				new_utility = minimax(state, depth-1, alpha, beta, False)[1]
-
-				if new_utility > utility:
-					utility = new_utility
-					best_move = move
-
-				alpha = max(alpha, utility)
-				if alpha >= beta:
-					break
-			return best_move, utility
-
-		else: # Minimizing player
-			utility = math.inf
-			best_move = random.choice(valid_moves)
-			for move in valid_moves:
-				state.simulate_opponent_move(move)
-				new_utility = minimax(state, depth-1, alpha, beta, True)[1]
-
-				if new_utility < utility:
-					utility = new_utility
-					best_move = move
-
-				beta = min(beta, utility)
-				if alpha >= beta:
-					break
-			return best_move, utility
+def minimax(state, depth, alpha, beta, maximizingPlayer):
+	valid_moves = state.get_valid_moves()
+	if depth == 0 or is_terminal_node:
+		if is_terminal:
+		    return check_win(player)
+		else: # Depth is zero
+			return (None, evaluate(state))
+	if maximizingPlayer:
+		utility = -math.inf
+		for move in valid_moves:
+			new_utility = minimax(state,depth-1,alpha,beta,False)
+			if new_utility > utility:
+				utility = new_utility
+				best_move = move
+			alpha = max(alpha, utility)
+			if alpha >= beta:
+				break
+		return best_move, utility
+	else: # Minimizing player
+		utility = math.inf
+		for move in valid_moves:
+			new_utility = minimax(state,depth-1,alpha,beta,True)
+			if new_utility < utility:
+				utility = new_utility
+				best_move = move
+			beta = min(beta, utility)
+			if alpha >= beta:
+				break
+		return best_move, utility
