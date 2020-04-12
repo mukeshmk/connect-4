@@ -44,10 +44,10 @@ The basic flow of the game can be represented like this:
 
 Basic game code taken from: [@KeithGalli](https://github.com/KeithGalli) from the repo [Connect4-Python](https://github.com/KeithGalli/Connect4-Python)
 
-#### This game was done as part of Trinity College Dublin's CS7IS2 - Artificial intelligence Modules's - Group Project
+#### This game was developed as part of Trinity College Dublin's CS7IS2 - Artificial intelligence Modules's - Group Project
 * The project report can be found [here](docs/FIRSTNAME_LASTNAME_CS7IS2_2019_Final_Report_tex.pdf)
 * The evaluation metrics and reports can be found [here](docs/results/Evaluation.xlsx)
-* The win-ratio and comparison between agents can be found [here](docs/results/Win ratio between bots.xlsx)
+* The win-ratio and comparison between agents can be found [here](docs/results/Win%20ratio%20between%20bots.xlsx)
 * The reference papers and articles used in the project report can be found [here](docs/references/)
 
 #### Contributors
